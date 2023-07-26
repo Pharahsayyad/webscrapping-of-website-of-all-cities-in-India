@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-
+from datetime import datetime
 def scrape_weather_data():
     url = 'https://www.weather-forecast.com/countries/India-1' # Replace this with the actual weather website URL
     HEADERS = {
@@ -44,10 +44,14 @@ def scrape_weather_data():
             if span_element:
                 temperature_list.append(span_element.text)
         #print(temperature_list)
-
-        
+        # get current date and time
+        current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+        # convert datetime obj to string
+        str_current_datetime = str(current_datetime)
+        # create a file object along with extension
+        file_name = "weatherdata"+str_current_datetime+".csv"
         #Write the data to a CSV file
-        with open('weather_data.csv', 'w', newline='') as csvfile:
+        with open(file_name, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(['City', 'Temperature (°C)'])
             for city, temp in zip(city_list, temperature_list):
